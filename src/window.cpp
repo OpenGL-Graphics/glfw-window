@@ -11,6 +11,11 @@ Window::Window(const std::string& title) {
     return;
   }
 
+  // enable multisample anti-aliasing (MSAA) to smooth out jagged edges
+  // window backbuffer with 4 subsamples per screen coordinate (pixel)
+  // https://learnopengl.com/Advanced-OpenGL/Anti-Aliasing
+  glfwWindowHint(GLFW_SAMPLES, 4);
+
   // window in full-screen mode
   Monitor monitor;
   // w = glfwCreateWindow(monitor.width, monitor.height, title.c_str(), monitor.m, NULL);
