@@ -11,6 +11,12 @@ Window::Window(const std::string& title) {
     return;
   }
 
+  // set OpenGL version to 3.3 or higher core (no obsolete features): https://learnopengl.com/Getting-started/Hello-Window
+  // Intel Haswell CPU (4th gen) supports OpenGL 4.5: https://en.wikipedia.org/wiki/Intel_Graphics_Technology
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
   // enable multisample anti-aliasing (MSAA) to smooth out jagged edges
   // window backbuffer with 4 subsamples per screen coordinate (pixel)
   // https://learnopengl.com/Advanced-OpenGL/Anti-Aliasing
