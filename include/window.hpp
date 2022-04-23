@@ -24,6 +24,14 @@ struct Window {
   void attach_mouse_listeners(GLFWcursorposfun on_mouse_move, GLFWmousebuttonfun on_mouse_click, GLFWscrollfun on_mouse_scroll);
   bool is_key_pressed(int key) const;
   void close() const;
+
+  void init_timer();
+  void show_fps();
+
+private:
+  std::string m_title;
+  double m_last_time;
+  unsigned int m_fps;
 };
 
 #endif // WINDOW_HPP

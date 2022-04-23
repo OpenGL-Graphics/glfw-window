@@ -1,9 +1,13 @@
 #include <iostream>
+#include <sstream>
 
 #include "window.hpp"
 
 /* Create window & initilialize its OpenGL context */
-Window::Window(const std::string& title) {
+Window::Window(const std::string& title):
+  m_title(title),
+  m_fps(0)
+{
   // initialize glfw library
   if (!glfwInit()) {
     w = NULL;
@@ -24,8 +28,8 @@ Window::Window(const std::string& title) {
 
   // window in full-screen mode
   Monitor monitor;
-  // w = glfwCreateWindow(monitor.width, monitor.height, title.c_str(), monitor.m, NULL);
-  w = glfwCreateWindow(monitor.width, monitor.height, title.c_str(), NULL, NULL); // windowed mode
+  // w = glfwCreateWindow(monitor.width, monitor.height, m_title.c_str(), monitor.m, NULL);
+  w = glfwCreateWindow(monitor.width, monitor.height, m_title.c_str(), NULL, NULL); // windowed mode
 
   // get window size (same as monitor in full-screen mode)
   glfwGetWindowSize(w, &width, &height);
@@ -84,4 +88,31 @@ void Window::attach_mouse_listeners(GLFWcursorposfun on_mouse_move, GLFWmousebut
   glfwSetMouseButtonCallback(w, on_mouse_click);
   glfwSetCursorPosCallback(w, on_mouse_move);
   glfwSetScrollCallback(w, on_mouse_scroll);
+}
+
+/**
+ * Called just before mainloop to ignore time to load 3d models
+ * Otherwise first fps calculated would be underestimated
+ */
+void Window::init_timer() {
+  m_last_time = glfwGetTime();
+}
+
+/**
+ * Calculate fps & show it on title bar
+ * called every frame in main loop
+ */
+void Window::show_fps() {
+  m_fps++;
+  double current_time = glfwGetTime();
+
+  // more than 1 sec elapsed
+  if (current_time - m_last_time >= 1.0) {
+    std::ostringstream stream;
+    stream << m_title << " (FPS: " << m_fps << ")";
+
+    glfwSetWindowTitle(w, stream.str().c_str());
+    m_last_time = current_time;
+    m_fps = 0;
+  }
 }
