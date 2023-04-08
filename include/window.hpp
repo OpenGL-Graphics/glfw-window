@@ -14,7 +14,7 @@ struct Window {
   int height;
   GLFWwindow* w;
 
-  Window(const std::string& title);
+  Window(const std::string& title, bool is_fullscreen=false);
   void make_context();
   void render();
   void process_events();

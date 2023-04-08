@@ -4,7 +4,7 @@
 #include "window.hpp"
 
 /* Create window & initilialize its OpenGL context */
-Window::Window(const std::string& title):
+Window::Window(const std::string& title, bool is_fullscreen):
   m_title(title),
   m_fps(0)
 {
@@ -26,10 +26,12 @@ Window::Window(const std::string& title):
   // https://learnopengl.com/Advanced-OpenGL/Anti-Aliasing
   glfwWindowHint(GLFW_SAMPLES, 4);
 
-  // window in full-screen mode
+  // window in full-screen mode (if monitor provided)
   Monitor monitor;
-  // w = glfwCreateWindow(monitor.width, monitor.height, m_title.c_str(), monitor.m, NULL);
-  w = glfwCreateWindow(monitor.width, monitor.height, m_title.c_str(), NULL, NULL); // windowed mode
+  if (is_fullscreen)
+    w = glfwCreateWindow(monitor.width, monitor.height, m_title.c_str(), monitor.m, NULL);
+  else
+    w = glfwCreateWindow(monitor.width, monitor.height, m_title.c_str(), NULL, NULL); // windowed mode
 
   // get window size (same as monitor in full-screen mode)
   glfwGetWindowSize(w, &width, &height);
